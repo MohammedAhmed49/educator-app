@@ -1,24 +1,17 @@
-import logo from './logo.svg';
-import classes from './App.module.scss';
+import { Route, Routes } from "react-router-dom";
+import Layout from "./layout/layout.component";
+import Home from "./pages/home/home.component";
+import SignIn from "./pages/sign-in/sign-in.component";
 
 function App() {
   return (
-    <div className={classes.App}>
-      <header className={classes['App-header']}>
-        <img src={logo} className={classes['App-logo']} alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path='*' element={<p className="container mx-auto">Not Found</p>} />
+        <Route path="/" element={<Home />} />
+        <Route path="sign-in" element={<SignIn />} />
+      </Route>
+    </Routes>
   );
 }
 
