@@ -1,12 +1,24 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
     return (
-        <div className="container mx-auto">
-            <Link to="/" className="mr-3 text-secondary">Home</Link>
-            <Link to="/courses" className="mr-3 text-secondary">Courses</Link>
-            <Link to="/sign-in" className="mr-3 text-secondary">Sign in</Link>
-            <Link to="/sign-up" className="mr-3 text-secondary">Sign up</Link>
+        <div className="navbar shadow-lg py-4 border-b border-secondary">
+            <div className="container mx-auto">
+                <div className="flex justify-between items-center">
+                    <div className="navbar__logo">
+                        <img src={logo} alt="Educator logo" className="w-20"/>
+                    </div>
+
+                    <div className="navbar__links">
+                        <Link to="/" className="mr-5 text-secondary">Home</Link>
+                        <Link to="/courses" className="mr-5 text-secondary">Courses</Link>
+                        <Link to="/sign-in" className="mr-5 text-secondary">Sign in</Link>
+                        <Link to="/sign-up" className="text-secondary">Sign up</Link>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     )
 }

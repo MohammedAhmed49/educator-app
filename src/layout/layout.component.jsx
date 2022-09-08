@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Header from "./header/header.component";
 
-const Layout = (props) => {
+const Layout = () => {
     return(
         <>
             <Header />
-            <Outlet />
+
+            <main>
+                <Outlet />
+            </main>
+            
         </>
     )
 }
