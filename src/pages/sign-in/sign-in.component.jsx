@@ -1,8 +1,15 @@
+import Button from "../../UI/button/button.component";
+import { signInWithGoogle } from "../../utils/firebase/firebase.utils";
 
 const SignIn = () => {
+    const signIn = async () => {
+        const user = await signInWithGoogle();
+        console.log(user);
+    }
+
     return (
-        <div className="container mx-auto">
-            Sign In page
+        <div className="container mx-auto mt-2">
+            <Button type="purple"  onClick={signIn}>Sign in with Google</Button>
         </div>
     )
 }
