@@ -7,7 +7,6 @@ const SignUp = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
 
-    console.log(errors);
     return (
         <div>
             <div className="flex">
@@ -19,26 +18,29 @@ const SignUp = () => {
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="my-5">
-                                <Input color="purple" variant="standard" label="User name" {...register("userName",  { required: true, maxLength: 20 })} />
-                                <p>{errors.userName?.message}</p>
+                                <Input error={Boolean(errors.userName)} color="purple" variant="standard" label="User name" {...register("userName",  { required: true, maxLength: 20 })} />
+                                {errors.userName?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
+                                {errors.userName?.type === "maxLength" && <span className="text-red-500 text-xs">Max legnth exceeded</span>}
                             </div>
                             
                             <div className="my-5">
-                                <Input color="purple" variant="standard" label="Email" type="email" {...register("email", { required: true })} />
-                                <p>{errors.email?.message}</p>
+                                <Input error={Boolean(errors.email)} color="purple" variant="standard" label="Email" type="email" {...register("email", { required: true })} />
+                                {errors.email?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
                             </div>
                             
                             <div className="my-5">
-                                <Input color="purple" variant="standard" label="Password" type="password" {...register("password", { required: true, minLength: 6 })} />
-                                <p>{errors.password?.message}</p>
+                                <Input error={Boolean(errors.password)} color="purple" variant="standard" label="Password" type="password" {...register("password", { required: true, minLength: 6 })} />
+                                {errors.password?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
+                                {errors.password?.type === "minLength" && <span className="text-red-500 text-xs">Your password should be longer than 5 digits!</span>}
                             </div>
                             
                             <div className="my-5">
-                                <Input color="purple" variant="standard" label="Confirm Password" type="password" {...register("confirmPassword", { required: true, minLength: 6 })} />
-                                <p>{errors.confirmPassword?.message}</p>
+                                <Input error={Boolean(errors.confirmPassword)} color="purple" variant="standard" label="Confirm Password" type="password" {...register("confirmPassword", { required: true, minLength: 6 })} />
+                                {errors.confirmPassword?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
+                                {errors.confirmPassword?.type === "minLength" && <span className="text-red-500 text-xs">Your password should be longer than 5 digits!</span>}
                             </div>
 
-                            <Button type="purple" classNames="border-secondary border w-1/4 block ml-auto">Sign up</Button>
+                            <Button type="purple" classnames="border-secondary border w-1/4 block ml-auto">Sign up</Button>
                         </form>
 
                         <div>

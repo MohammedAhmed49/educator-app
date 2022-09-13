@@ -8,7 +8,7 @@ export const BUTTON_TYPES_CLASSES = {
 const Button = (props) => {
     
     return (
-        <button className={`${BUTTON_TYPES_CLASSES[props.type]} ${props.classNames ? props.classNames : ''} px-4 py-2 rounded transition duration-300`} {...props}>
+        <button className={`${BUTTON_TYPES_CLASSES[props.type]} ${props.classnames ? props.classnames : ''} px-4 py-2 rounded transition duration-300`} {...props}>
             {props.children}
         </button>
     )

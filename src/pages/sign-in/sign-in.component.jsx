@@ -9,7 +9,7 @@ const SignIn = () => {
 
     return (
         <div className="container mx-auto mt-2">
-            <Button type="purple" classNames="border-secondary border" onClick={signIn}>Sign in with Google</Button>
+            <Button type="purple" classnames="border-secondary border" onClick={signIn}>Sign in with Google</Button>
         </div>
     )
 }
