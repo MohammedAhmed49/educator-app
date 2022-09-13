@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+module.exports = withMT({
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
@@ -9,7 +12,10 @@ module.exports = {
         'primary': '#008fbb',
         'secondary': '#9a2783'
       },
+      backgroundImage: {
+        'auth-side': "url('./assets/auth-bg.jpg')"
+      }
     },
   },
   plugins: [],
-}
+});
