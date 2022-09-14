@@ -1,10 +1,27 @@
 import { Input } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import Button from "../../UI/button/button.component";
 
 const SignUp = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const formSchema = Yup.object().shape({
+        userName: Yup.string()
+          .required('User name is mandatory'),
+        email: Yup.string()
+          .required('Email is mandatory')
+          .email('Please enter a valid email'),
+        password: Yup.string()
+          .required('Password is mendatory')
+          .min(6, 'Password must be at 3 char long'),
+        confirmPassword: Yup.string()
+          .required('Password is mendatory')
+          .oneOf([Yup.ref('password')], 'Passwords does not match'),
+      })
+
+    const formOptions = { resolver: yupResolver(formSchema) }
+    const { register, handleSubmit, watch, formState: { errors } } = useForm(formOptions);
     const onSubmit = data => console.log(data);
 
     return (
@@ -19,31 +36,31 @@ const SignUp = () => {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="my-5">
                                 <Input error={Boolean(errors.userName)} color="purple" variant="standard" label="User name" {...register("userName",  { required: true, maxLength: 20 })} />
-                                {errors.userName?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
-                                {errors.userName?.type === "maxLength" && <span className="text-red-500 text-xs">Max legnth exceeded</span>}
+                                <span className="text-red-500 text-xs">{errors.userName?.message}</span>
                             </div>
                             
                             <div className="my-5">
                                 <Input error={Boolean(errors.email)} color="purple" variant="standard" label="Email" type="email" {...register("email", { required: true })} />
-                                {errors.email?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
+                                <span className="text-red-500 text-xs">{errors.email?.message}</span>
                             </div>
                             
                             <div className="my-5">
                                 <Input error={Boolean(errors.password)} color="purple" variant="standard" label="Password" type="password" {...register("password", { required: true, minLength: 6 })} />
-                                {errors.password?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
-                                {errors.password?.type === "minLength" && <span className="text-red-500 text-xs">Your password should be longer than 5 digits!</span>}
+                                <span className="text-red-500 text-xs">{errors.password?.message}</span>
                             </div>
                             
                             <div className="my-5">
                                 <Input error={Boolean(errors.confirmPassword)} color="purple" variant="standard" label="Confirm Password" type="password" {...register("confirmPassword", { required: true, minLength: 6 })} />
-                                {errors.confirmPassword?.type === "required" && <span className="text-red-500 text-xs">This field is required</span>}
-                                {errors.confirmPassword?.type === "minLength" && <span className="text-red-500 text-xs">Your password should be longer than 5 digits!</span>}
+                                <span className="text-red-500 text-xs">{errors.confirmPassword?.message}</span>
                             </div>
 
-                            <Button type="purple" classnames="border-secondary border w-1/4 block ml-auto">Sign up</Button>
+                            <div className="flex justify-between w-full">
+                                <Button type="purple" classnames="border-secondary border w-1/4 block">Sign Up</Button>
+                                <Button type="turquoise" classnames="border-primary border w-1/4 block">Google Sign Up</Button>
+                            </div>
                         </form>
 
-                        <div>
+                        <div className="mt-5">
                             <p>Already have an account? <Link to="/sign-in" className="text-secondary underline">Sign in</Link></p>
                         </div>
                     </div>
