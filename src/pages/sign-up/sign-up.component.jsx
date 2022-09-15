@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Button from "../../UI/button/button.component";
+import { signInWithGoogle, signUpWithEmail } from "../../utils/firebase/firebase.utils";
 
 const SignUp = () => {
     const formSchema = Yup.object().shape({
@@ -14,7 +15,7 @@ const SignUp = () => {
           .email('Please enter a valid email'),
         password: Yup.string()
           .required('Password is mendatory')
-          .min(6, 'Password must be at 3 char long'),
+          .min(6, 'Password must be at 6 char long'),
         confirmPassword: Yup.string()
           .required('Password is mendatory')
           .oneOf([Yup.ref('password')], 'Passwords does not match'),
@@ -22,7 +23,16 @@ const SignUp = () => {
 
     const formOptions = { resolver: yupResolver(formSchema) }
     const { register, handleSubmit, watch, formState: { errors } } = useForm(formOptions);
-    const onSubmit = data => console.log(data);
+    const onSubmit = async (data) => {
+        const user = await signUpWithEmail(data.email, data.password);
+        console.log(user);
+    };
+
+    const signIn = async (e) => {
+        e.preventDefault();
+        const user = await signInWithGoogle();
+        console.log(user);
+    }
 
     return (
         <div>
@@ -35,28 +45,28 @@ const SignUp = () => {
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="my-5">
-                                <Input error={Boolean(errors.userName)} color="purple" variant="standard" label="User name" {...register("userName",  { required: true, maxLength: 20 })} />
+                                <Input error={Boolean(errors.userName)} color="purple" variant="standard" label="User name" {...register("userName")} />
                                 <span className="text-red-500 text-xs">{errors.userName?.message}</span>
                             </div>
                             
                             <div className="my-5">
-                                <Input error={Boolean(errors.email)} color="purple" variant="standard" label="Email" type="email" {...register("email", { required: true })} />
+                                <Input error={Boolean(errors.email)} color="purple" variant="standard" label="Email" type="email" {...register("email")} />
                                 <span className="text-red-500 text-xs">{errors.email?.message}</span>
                             </div>
                             
                             <div className="my-5">
-                                <Input error={Boolean(errors.password)} color="purple" variant="standard" label="Password" type="password" {...register("password", { required: true, minLength: 6 })} />
+                                <Input error={Boolean(errors.password)} color="purple" variant="standard" label="Password" type="password" {...register("password")} />
                                 <span className="text-red-500 text-xs">{errors.password?.message}</span>
                             </div>
                             
                             <div className="my-5">
-                                <Input error={Boolean(errors.confirmPassword)} color="purple" variant="standard" label="Confirm Password" type="password" {...register("confirmPassword", { required: true, minLength: 6 })} />
+                                <Input error={Boolean(errors.confirmPassword)} color="purple" variant="standard" label="Confirm Password" type="password" {...register("confirmPassword")} />
                                 <span className="text-red-500 text-xs">{errors.confirmPassword?.message}</span>
                             </div>
 
                             <div className="flex justify-between w-full">
                                 <Button type="purple" classnames="border-secondary border w-1/4 block">Sign Up</Button>
-                                <Button type="turquoise" classnames="border-primary border w-1/4 block">Google Sign Up</Button>
+                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signIn(e)}>Google Sign Up</Button>
                             </div>
                         </form>
 

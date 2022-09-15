@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 
@@ -18,7 +18,20 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
 
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 export const auth = getAuth();
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
+
+export const signUpWithEmail = async (email, password) => {
+  try {
+    const user = await createUserWithEmailAndPassword(auth, email, password);
+    return user;
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
