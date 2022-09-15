@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, updateProfile } from 'firebase/auth';
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -16,6 +16,8 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
+const db = getFirestore();
+
 const provider = new GoogleAuthProvider();
 
 provider.setCustomParameters({
@@ -26,12 +28,39 @@ export const auth = getAuth();
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
-export const signUpWithEmail = async (email, password) => {
+export const signUpWithEmail = async (email, password, displayName) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
+    
+    await updateProfile(auth.currentUser, {
+      displayName: displayName
+    });
     return user;
   } catch (error) {
     alert(error.message);
+  }
+}
+
+export const getUserDocument = async (userAuth, additionalData) => {
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userDocSnap = await getDoc(userDocRef);
+
+  if (!userDocSnap.exists()) {
+    const { email, displayName } = userAuth;
+    const creationDate = new Date();
+
+    try {
+      const result = await setDoc(userDocRef, {
+        email,
+        displayName,
+        creationDate,
+        ...additionalData
+      });
+
+      return result;
+    } catch (error) {
+      alert(error.message);
+    }
   }
 }
 

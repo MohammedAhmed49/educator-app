@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Button from "../../UI/button/button.component";
-import { signInWithGoogle, signUpWithEmail } from "../../utils/firebase/firebase.utils";
+import { getUserDocument, signInWithGoogle, signUpWithEmail } from "../../utils/firebase/firebase.utils";
 
 const SignUp = () => {
     const formSchema = Yup.object().shape({
@@ -19,19 +19,21 @@ const SignUp = () => {
         confirmPassword: Yup.string()
           .required('Password is mendatory')
           .oneOf([Yup.ref('password')], 'Passwords does not match'),
-      })
+      });
 
     const formOptions = { resolver: yupResolver(formSchema) }
-    const { register, handleSubmit, watch, formState: { errors } } = useForm(formOptions);
+    const { register, handleSubmit, formState: { errors } } = useForm(formOptions);
     const onSubmit = async (data) => {
-        const user = await signUpWithEmail(data.email, data.password);
-        console.log(user);
+        const user = await signUpWithEmail(data.email, data.password, data.userName);
+        const res = await getUserDocument(user.user);
+        console.log(res);
     };
 
-    const signIn = async (e) => {
+    const signUpWithGoogle = async (e) => {
         e.preventDefault();
         const user = await signInWithGoogle();
-        console.log(user);
+        const res = await getUserDocument(user.user);
+        console.log(res);
     }
 
     return (
@@ -66,7 +68,7 @@ const SignUp = () => {
 
                             <div className="flex justify-between w-full">
                                 <Button type="purple" classnames="border-secondary border w-1/4 block">Sign Up</Button>
-                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signIn(e)}>Google Sign Up</Button>
+                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signUpWithGoogle(e)}>Google Sign Up</Button>
                             </div>
                         </form>
 
