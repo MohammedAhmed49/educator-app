@@ -26,14 +26,12 @@ const SignUp = () => {
     const onSubmit = async (data) => {
         const user = await signUpWithEmail(data.email, data.password, data.userName);
         const res = await getUserDocument(user.user);
-        console.log(res);
     };
 
     const signUpWithGoogle = async (e) => {
         e.preventDefault();
         const user = await signInWithGoogle();
         const res = await getUserDocument(user.user);
-        console.log(res);
     }
 
     return (
