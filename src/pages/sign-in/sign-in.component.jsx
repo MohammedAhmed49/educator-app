@@ -67,7 +67,7 @@ const SignIn = () => {
                         </form>
 
                         <div className="mt-5">
-                            <p>Already have an account? <Link to="/sign-in" className="text-secondary underline">Sign in</Link></p>
+                            <p>Don't have an account? <Link to="/sign-up" className="text-secondary underline">Create account now!</Link></p>
                         </div>
                     </div>
                 </div>
