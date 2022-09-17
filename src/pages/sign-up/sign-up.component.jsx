@@ -22,16 +22,28 @@ const SignUp = () => {
       });
 
     const formOptions = { resolver: yupResolver(formSchema) }
-    const { register, handleSubmit, formState: { errors } } = useForm(formOptions);
+    const { register, handleSubmit, reset, formState: { errors } } = useForm(formOptions);
     const onSubmit = async (data) => {
         const user = await signUpWithEmail(data.email, data.password, data.userName);
         const res = await getUserDocument(user.user);
+        if (user) {
+            reset ({
+                email: '',
+                password: '',
+            });
+        }
     };
 
     const signUpWithGoogle = async (e) => {
         e.preventDefault();
         const user = await signInWithGoogle();
         const res = await getUserDocument(user.user);
+        if (user) {
+            reset ({
+                email: '',
+                password: '',
+            });
+        }
     }
 
     return (
