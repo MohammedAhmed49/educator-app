@@ -32,7 +32,7 @@ const Navbar = ({user}) => {
                         {
                             user ? (<>
                                     <Link to="/profile" className="mr-5 text-secondary">Profile</Link>
-                                    <a href="/" onClick={(e) => signOutHandler(e)} className="mr-5 text-secondary">Sign Out</a>
+                                    <a href="/" onClick={(e) => signOutHandler(e)} className="mr-5 text-secondary">Sign Out ({user.displayName})</a>
                                 </>) : 
                                 (<>
                                     <Link to="/sign-in" className="mr-5 text-secondary">Sign in</Link>

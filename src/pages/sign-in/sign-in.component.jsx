@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Button from "../../UI/button/button.component";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn = () => {
     const formSchema = Yup.object().shape({
@@ -39,8 +42,32 @@ const SignIn = () => {
         }
     }
 
+    const signInWithGoogleHandler = (e) => {
+        e.preventDefault();
+        toast.promise(
+            gooleSignIn,
+            {
+              pending: 'Creating your account!',
+              success: 'Account created successfully 👌',
+              error: 'Something wrong happened! 🤯',
+            }
+        )
+    }
+
+    const onSubmitHandler = (data) => {
+        toast.promise(
+            onSubmit(data),
+            {
+              pending: 'Logging into your account!',
+              success: 'Logged in successfully 👌',
+              error: 'Something wrong happened! 🤯',
+            }
+        )
+    }
+
     return (
         <div>
+            <ToastContainer />
             <div className="flex">
                 <div className="min-h-screen w-1/2 bg-center">
                     <div className="w-2/3 mx-auto flex flex-col justify-center h-full">
@@ -48,7 +75,7 @@ const SignIn = () => {
                         <h2 className="text-3xl font-bold">Sign in to continue learning.</h2>
                         <h3 className="text-lg mt-3">Continue your learning journey with courses you started!</h3>
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form onSubmit={handleSubmit(onSubmitHandler)}>
                             
                             <div className="my-5">
                                 <Input error={Boolean(errors.email)} color="purple" variant="standard" label="Email" type="email" {...register("email")} />
@@ -62,7 +89,7 @@ const SignIn = () => {
 
                             <div className="flex justify-between w-full">
                                 <Button type="purple" classnames="border-secondary border w-1/4 block">Sign In</Button>
-                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => gooleSignIn(e)}>Google Sign In</Button>
+                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signInWithGoogleHandler(e)}>Google Sign In</Button>
                             </div>
                         </form>
 

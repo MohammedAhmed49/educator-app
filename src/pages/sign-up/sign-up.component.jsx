@@ -5,6 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Button from "../../UI/button/button.component";
 import { getUserDocument, signInWithGoogle, signUpWithEmail } from "../../utils/firebase/firebase.utils";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
     const formSchema = Yup.object().shape({
@@ -28,26 +31,53 @@ const SignUp = () => {
         const res = await getUserDocument(user.user);
         if (user) {
             reset ({
+                userName: '',
                 email: '',
                 password: '',
+                confirmPassword: ''
             });
         }
     };
-
-    const signUpWithGoogle = async (e) => {
-        e.preventDefault();
+    
+    const signUpWithGoogle = async () => {
         const user = await signInWithGoogle();
         const res = await getUserDocument(user.user);
         if (user) {
             reset ({
+                userName: '',
                 email: '',
                 password: '',
+                confirmPassword: ''
             });
         }
     }
 
+    const signUpWithGoogleHandler = (e) => {
+        e.preventDefault();
+        toast.promise(
+            signUpWithGoogle,
+            {
+              pending: 'Creating your account!',
+              success: 'Account created successfully 👌',
+              error: 'Something wrong happened! 🤯',
+            }
+        )
+    }
+
+    const onSubmitHandler = (data) => {
+        toast.promise(
+            onSubmit(data),
+            {
+              pending: 'Creating your account!',
+              success: 'Account created successfully 👌',
+              error: 'Something wrong happened! 🤯',
+            }
+        )
+    }
+
     return (
         <div>
+            <ToastContainer />
             <div className="flex">
                 <div className="min-h-screen w-1/2 bg-center">
                     <div className="w-2/3 mx-auto flex flex-col justify-center h-full">
@@ -55,7 +85,7 @@ const SignUp = () => {
                         <h2 className="text-3xl font-bold">Don't have an account?</h2>
                         <h3 className="text-lg mt-3">Create a new account to start your learning journey!</h3>
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form onSubmit={handleSubmit(onSubmitHandler)}>
                             <div className="my-5">
                                 <Input error={Boolean(errors.userName)} color="purple" variant="standard" label="User name" {...register("userName")} />
                                 <span className="text-red-500 text-xs">{errors.userName?.message}</span>
@@ -78,7 +108,7 @@ const SignUp = () => {
 
                             <div className="flex justify-between w-full">
                                 <Button type="purple" classnames="border-secondary border w-1/4 block">Sign Up</Button>
-                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signUpWithGoogle(e)}>Google Sign Up</Button>
+                                <Button type="turquoise" classnames="border-primary border w-1/4 block" onClick={(e) => signUpWithGoogleHandler(e)}>Google Sign Up</Button>
                             </div>
                         </form>
 

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --toastify-color-light: #9a2783;
+    --toastify-text-color-light: #fff;
+}
+
 body {
     font-family: 'Cairo', sans-serif;
 }
