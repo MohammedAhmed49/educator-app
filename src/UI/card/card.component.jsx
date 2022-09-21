@@ -7,11 +7,11 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-const Card = (props) => {
+export const FloatedCard = (props) => {
     return (
-        <div class="group">
+        <div className="group">
             <TailwindCard className="w-96 h-full">
-                <CardHeader color="black-900" className="relative h-56 transition ease-in-out transform group-hover:-translate-y-2">
+                <CardHeader className="relative h-56 transition ease-in-out transform group-hover:-translate-y-2">
                     <img
                         src={props.imageURL}
                         alt="img-blur-shadow"
@@ -35,4 +35,23 @@ const Card = (props) => {
     )
 }
 
-export default Card;
+export const NonfloatedCard = (props) => {
+    return (
+        <TailwindCard className={`w-96 ${props.classname}`}>
+            <CardHeader floated={false} className="h-40">
+                <img src={props.imageURL} alt="course-picture" />
+            </CardHeader>
+            <CardBody className="text-center">
+                <Typography variant="h4" color="blue-gray" className="mb-2">
+                    {props.courseName}
+                </Typography>
+                <Typography className="font-medium text-primary" textGradient>
+                    {props.courseInstructor}
+                </Typography>
+            </CardBody>
+            <CardFooter className="flex justify-center gap-7 pt-2">
+                <Link to={`/course/${props.courseLink}`} className="text-secondary">Enroll to this course</Link>
+            </CardFooter>
+        </TailwindCard>
+    )
+}
